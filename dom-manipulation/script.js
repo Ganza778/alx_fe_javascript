@@ -16,10 +16,10 @@ function saveQuotes() {
   localStorage.setItem('quotes', JSON.stringify(quotes));
 }
 
-// Function to populate the category dropdown with unique categories
+// Function to populate the category dropdown with unique categories using map
 function populateCategories() {
-  const categories = new Set();  // A Set will store only unique values
-  quotes.forEach(quote => categories.add(quote.category));  // Loop through quotes and add categories to the Set
+  // Use map to create an array of categories, then use Set to remove duplicates
+  const categories = [...new Set(quotes.map(quote => quote.category))];
   
   // Get the category filter dropdown
   const categoryFilter = document.getElementById('categoryFilter');
