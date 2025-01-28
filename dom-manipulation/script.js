@@ -16,7 +16,7 @@ function saveQuotes() {
 }
 
 // Sync local quotes with the "server" (simulated using JSONPlaceholder)
-async function syncWithServer() {
+async function syncQuotes() {
   try {
     // Simulate server fetching
     const serverQuotes = await fetchQuotesFromServer();
@@ -74,7 +74,7 @@ async function postQuoteToServer(newQuote) {
 }
 
 // Periodically check for updates from the server every 10 seconds
-setInterval(syncWithServer, 10000); // 10 seconds interval
+setInterval(syncQuotes, 10000); // 10 seconds interval
 
 // Populate categories dynamically (same as before)
 function populateCategories() {
@@ -130,7 +130,7 @@ async function addQuote() {
     await postQuoteToServer(newQuote);
 
     // Sync with the server and display the new quote immediately
-    await syncWithServer();
+    await syncQuotes();
     displayQuotes([newQuote]);
 
     // Clear the input fields
@@ -160,4 +160,4 @@ async function handleServerConflict() {
 
 // Initialize app by populating categories and syncing with the server
 populateCategories();
-syncWithServer();
+syncQuotes();
