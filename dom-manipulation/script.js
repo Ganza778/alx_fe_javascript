@@ -51,6 +51,28 @@ async function fetchQuotesFromServer() {
   }));
 }
 
+// Function to POST a new quote to the server (using JSONPlaceholder)
+async function postQuoteToServer(newQuote) {
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',  // Ensure the content type is JSON
+      },
+      body: JSON.stringify(newQuote), // Convert the new quote to a JSON string
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to post quote to server');
+    }
+
+    const postedQuote = await response.json();
+    console.log('Posted new quote to server:', postedQuote);
+  } catch (error) {
+    console.error("Error posting quote to server:", error);
+  }
+}
+
 // Periodically check for updates from the server every 10 seconds
 setInterval(syncWithServer, 10000); // 10 seconds interval
 
@@ -89,7 +111,7 @@ function displayQuotes(filteredQuotes) {
 }
 
 // Add a new quote and sync it with the "server"
-function addQuote() {
+async function addQuote() {
   const newQuoteText = document.getElementById('newQuoteText').value;
   const newQuoteCategory = document.getElementById('newQuoteCategory').value;
 
@@ -99,11 +121,19 @@ function addQuote() {
       category: newQuoteCategory,
       lastModified: Date.now()
     };
+
+    // Add the new quote to the local storage
     quotes.push(newQuote);
     saveQuotes();
-    syncWithServer(); // Sync with the simulated server
 
-    displayQuotes([newQuote]); // Display new quote immediately
+    // Post the new quote to the server
+    await postQuoteToServer(newQuote);
+
+    // Sync with the server and display the new quote immediately
+    await syncWithServer();
+    displayQuotes([newQuote]);
+
+    // Clear the input fields
     document.getElementById('newQuoteText').value = '';
     document.getElementById('newQuoteCategory').value = '';
   } else {
