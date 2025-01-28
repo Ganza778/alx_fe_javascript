@@ -34,6 +34,9 @@ async function syncQuotes() {
     saveQuotes();
     displayQuotes(quotes); // Update UI after syncing
 
+    // Show sync success message
+    showSyncMessage("Quotes synced with server!");
+
   } catch (error) {
     console.error("Error syncing with server:", error);
   }
@@ -141,21 +144,16 @@ async function addQuote() {
   }
 }
 
-// Show conflict resolution notification
-function showConflictMessage(message) {
-  document.getElementById('conflictMessage').textContent = message;
-}
+// Show sync success message in the UI
+function showSyncMessage(message) {
+  const syncMessageElement = document.getElementById('syncMessage');
+  syncMessageElement.textContent = message;
+  syncMessageElement.style.display = 'block';
 
-// Handle errors or conflicts when syncing
-async function handleServerConflict() {
-  try {
-    const serverQuotes = await fetchQuotesFromServer();
-    // Display conflict message
-    showConflictMessage("Conflict detected: Server data has been updated.");
-    // Optionally, allow users to resolve conflicts manually here
-  } catch (error) {
-    console.error("Error handling conflict:", error);
-  }
+  // Hide the sync message after 3 seconds
+  setTimeout(() => {
+    syncMessageElement.style.display = 'none';
+  }, 3000);
 }
 
 // Initialize app by populating categories and syncing with the server

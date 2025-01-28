@@ -14,7 +14,7 @@
         <option value="all">All Categories</option>
         <!-- Dynamically populated categories -->
       </select>
-      
+
     <div id="quoteDisplay"></div>
     <button id="newQuote">Show New Quote</button>
 
@@ -29,6 +29,8 @@
     <button id="exportButton">Export Quotes to JSON</button>
 
     <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
+
+    <div id="syncMessage" style="display: none; color: green; font-weight: bold;"></div>
 
     <script src="script.js"></script>
 </body>
