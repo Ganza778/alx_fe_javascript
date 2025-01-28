@@ -18,10 +18,16 @@ function saveQuotes() {
 
 // Function to populate the category dropdown with unique categories
 function populateCategories() {
-  const categories = new Set();
-  quotes.forEach(quote => categories.add(quote.category));
+  const categories = new Set();  // A Set will store only unique values
+  quotes.forEach(quote => categories.add(quote.category));  // Loop through quotes and add categories to the Set
   
+  // Get the category filter dropdown
   const categoryFilter = document.getElementById('categoryFilter');
+  
+  // Clear the existing options in case categories change
+  categoryFilter.innerHTML = '<option value="all">All Categories</option>';
+  
+  // Add each unique category to the dropdown
   categories.forEach(category => {
     const option = document.createElement('option');
     option.value = category;
@@ -67,7 +73,7 @@ function addQuote() {
   if (newQuoteText && newQuoteCategory) {
     quotes.push({ text: newQuoteText, category: newQuoteCategory });
     saveQuotes();
-    populateCategories();
+    populateCategories();  // Update category dropdown after adding new quote
     filterQuotes(); // Update quotes display after adding new one
 
     // Clear the input fields
@@ -97,7 +103,7 @@ function importFromJsonFile(event) {
     const importedQuotes = JSON.parse(event.target.result);
     quotes.push(...importedQuotes);
     saveQuotes();
-    populateCategories();
+    populateCategories();  // Update categories after importing quotes
     filterQuotes(); // Update quotes display after importing
     alert('Quotes imported successfully!');
   };
